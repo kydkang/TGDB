@@ -1,0 +1,15 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Current Time</title>
+    </head>
+    <body>
+        {# This is a comment #}
+        {% if now %}
+            <p>Current date and time is {{ now }}</p>
+        {% else %}
+            <p>now variable is not available </p>
+        {% endif %}
+        <p>Current scheme: {{request.scheme}}</p>
+    </body>
+</html>
