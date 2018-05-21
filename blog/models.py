@@ -1,7 +1,8 @@
 from django.db import models
+from django.template.defaultfilters import slugify
 
 class Author(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=100, unique=True, verbose_name="Author Name")
     email = models.EmailField(unique=True)
     active = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -13,6 +14,8 @@ class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE) 
+    class Meta:
+        verbose_name_plural = "Categories" 
     def __str__(self):
         return self.name 
 
@@ -25,7 +28,8 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True,
+            help_text="Slug will be generated automatically from the tile of the post")
     content = models.TextField()
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -33,4 +37,8 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag) 
     def __str__(self):
         return self.title 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Post, self).save(*args, **kwargs)
+
 
