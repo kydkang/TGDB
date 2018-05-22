@@ -56,4 +56,5 @@ class PostForm(forms.ModelForm):
         if title:
             cleaned_data['slug'] = slugify(title)
         return cleaned_data
+        
 
