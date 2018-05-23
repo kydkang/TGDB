@@ -15,16 +15,30 @@
     <div class="content">
     <div class="section-inner clearfix">
         <h3>Submit Your feedback</h3>       
-        <form action="" method="post">
+        <form action="" method="post" novalidate>
             {% csrf_token %}
             <table>
-            {{ form.as_table }}                   
-                <tr>
-                    <td></td>
-                    <td><input type="submit" value="Submit"></td>
-                </tr>
+                {% for field in form %}
+                    <tr>
+                        <td>{{ field.label_tag }}</td>
+                        <td>
+                            {{ field.errors }}
+                            {{ field }}                            
+                        </td>
+                        <td>
+                            {% if field.help_text %}
+                            {{ field.help_text }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Submit"></td>
+                    </tr>
             </table>
-        </form>
+        </form>    
+    
         </div>
     </div>
 {% endblock %}
