@@ -1,6 +1,9 @@
 from django.http import HttpResponse 
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect 
 from .models import Author, Tag, Category, Post 
+from .forms import FeedbackForm 
+from django.core.mail import mail_admins 
+from django.contrib import messages
 
 def index(request):
     return HttpResponse("Hello Django")
@@ -34,4 +37,21 @@ def post_by_tag(request, tag_slug):
 
 def test_redirect(request):
     return redirect('post_list', permanent=True)
+
+def feedback(request):
+    if request.method == 'POST':
+        f = FeedbackForm(request.POST)
+        if f.is_valid():
+            name = f.cleaned_data['name']
+            sender = f.cleaned_data['email']
+            subject = "You have a new Feedback from {}:{}".format(name, sender)
+            message = "Subject: {}\n\nMessage: {}".format(f.cleaned_data['subject'], f.cleaned_data['message'])
+            mail_admins(subject, message)
+            f.save()
+            messages.add_message(request, messages.INFO, 'Feedback Submitted.')
+            return redirect('feedback')
+    else:
+        f = FeedbackForm()
+    return render(request, 'blog/feedback.html', {'form': f})
+
     
