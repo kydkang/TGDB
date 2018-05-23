@@ -105,4 +105,6 @@ venv.bak/
 .mypy_cache/
 
 # SQLite database files  -- See p51 of TangoW/Django  
-# *.sqlite3
+*.sqlite3
+db.sqlite3
+
