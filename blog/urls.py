@@ -2,6 +2,10 @@ from django.urls import path
 from blog import views
 
 urlpatterns = [
+    path('login/', views.login, name='blog_login'),
+    path('logout/', views.logout, name='blog_logout'),
+    path('admin_page/', views.admin_page, name='admin_page'),
+
     path('lousy-login/', views.lousy_login, name='lousy_login'),
     path('lousy-secret/', views.lousy_secret, name='lousy_secret'),
     path('lousy-logout/', views.lousy_logout, name='lousy_logout'),
