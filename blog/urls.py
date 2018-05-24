@@ -2,6 +2,9 @@ from django.urls import path
 from blog import views
 
 urlpatterns = [
+    path('stop-tracking/', views.stop_tracking, name='stop_tracking'), 
+    path('track_user/', views.track_user, name='track_user'), 
+    path('cookie/', views.test_cookie, name='cooke'), 
     path('feedback/', views.feedback, name='feedback'), 
     path('blog/', views.test_redirect, name='test_redirect'), 
     path('category/<slug:category_slug>/', views.post_by_category, name='post_by_category'),
