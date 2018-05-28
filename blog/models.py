@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.urls import reverse 
 #  from cadmin.forms import CustomUserCreationForm
 from django.contrib.auth.models import User
+from ckeditor_uploader.fields import RichTextUploadingField 
 
 class Author(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
@@ -37,7 +38,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(unique=True,
             help_text="Slug will be generated automatically from the tile of the post")
-    content = models.TextField()
+    content = RichTextUploadingField()
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -48,7 +49,7 @@ class Post(models.Model):
         self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
     def get_absolute_url(self):
-        return reverse('post_detail', args=[self.id, self.slug]) 
+        return reverse('post_detail', args=[self.pk, self.slug]) 
 
 class Feedback(models.Model):
     name = models.CharField(max_length=200, help_text="Name of the sender")
